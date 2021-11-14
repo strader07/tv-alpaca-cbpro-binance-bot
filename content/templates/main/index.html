@@ -1,0 +1,36 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load i18n %}
+
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+
+        {% trans 'Welcome' %} <b>{{ request.user.username }}</b>.
+        <p>&nbsp;</p>
+
+        {% if not isStarted %}
+	        <h4>{% trans 'The bot status: ' %}<b>OFF</b></h4>
+	        <hr>
+	        <form method="post" action="/startbot/">
+		        {% csrf_token %}
+		        <button class="btn btn-primary">{% trans 'Turn on!' %}</button>
+	        </form>
+		    <hr>
+		{% else %}
+			<h4>{% trans 'The bot status: ' %}<b>ON</b></h4>
+	        <hr>
+	        <form method="post" action="/stopbot/">
+		        {% csrf_token %}
+		        <button class="btn btn-primary">{% trans 'Turn off!' %}</button>
+	        </form>
+		    <hr>
+		{% endif %}
+
+    {% else %}
+
+        {% trans 'Login to manage your bot.' %}
+
+    {% endif %}
+
+{% endblock %}
